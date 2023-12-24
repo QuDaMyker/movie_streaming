@@ -1,197 +1,212 @@
+import 'dart:convert';
+
 import 'package:dio/dio.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:get/get.dart';
 
-class MovieService {
-  Future<List<Map<String, dynamic>>> getListGenre() async {
+class ExploreServices extends GetxController {
+  Future<List<Map<String, dynamic>>> getCollectionSearch(
+    String query,
+    int page,
+  ) async {
+    print(query);
     List<Map<String, dynamic>> result = [];
     try {
-      var dio = Dio();
       var headers = {
         'Authorization': 'Bearer ${dotenv.env['TMDB_ACCESS_TOKEN']}',
       };
+      var dio = Dio();
       var response = await dio.request(
-        '${dotenv.env['TMDB_URL']}/genre/movie/list?language=en',
+        '${dotenv.env['TMDB_URL']}/search/collection?query=$query&include_adult=false&language=en-US&page=$page',
         options: Options(
           method: 'GET',
           headers: headers,
         ),
       );
-      if (response.statusCode == 200) {
-        result = List<Map<String, dynamic>>.from(response.data['genres']);
-      }
-    } catch (e) {
-      print(e.toString());
-    }
 
-    return result;
-  }
-
-  Future<Map<String, dynamic>> getDetailMovie(int id) async {
-    Map<String, dynamic> result = {};
-    try {
-      var dio = Dio();
-      var headers = {
-        'Authorization': 'Bearer ${dotenv.env['TMDB_ACCESS_TOKEN']}',
-      };
-      var response = await dio.request(
-        '${dotenv.env['TMDB_URL']}/movie/$id?language=en-US',
-        options: Options(
-          method: 'GET',
-          headers: headers,
-        ),
-      );
-      if (response.statusCode == 200) {
-        result = Map<String, dynamic>.from(response.data);
-      }
-    } catch (e) {
-      print(e.toString());
-    }
-
-    return result;
-  }
-
-  Future<List<Map<String, dynamic>>> getTrendingMovie(int page) async {
-    List<Map<String, dynamic>> result = [];
-    try {
-      var dio = Dio();
-      var headers = {
-        'Authorization': 'Bearer ${dotenv.env['TMDB_ACCESS_TOKEN']}',
-      };
-      var response = await dio.request(
-        '${dotenv.env['TMDB_URL']}/movie/now_playing?language=en-US&page=$page',
-        options: Options(
-          method: 'GET',
-          headers: headers,
-        ),
-      );
       if (response.statusCode == 200) {
         result = List<Map<String, dynamic>>.from(response.data['results']);
+        print(result);
+      } else {
+        print(response.statusMessage);
       }
     } catch (e) {
       print(e.toString());
     }
-
     return result;
   }
 
-  Future<List<Map<String, dynamic>>> getPopularMovie(int page) async {
+  Future<List<Map<String, dynamic>>> getCompanySearch(
+    String query,
+    int page,
+  ) async {
     List<Map<String, dynamic>> result = [];
     try {
-      var dio = Dio();
       var headers = {
         'Authorization': 'Bearer ${dotenv.env['TMDB_ACCESS_TOKEN']}',
       };
+      var dio = Dio();
       var response = await dio.request(
-        '${dotenv.env['TMDB_URL']}/movie/popular?language=en-US&page=$page',
+        '${dotenv.env['TMDB_URL']}/search/company?query=$query&include_adult=false&language=en-US&page=$page',
         options: Options(
           method: 'GET',
           headers: headers,
         ),
       );
+
       if (response.statusCode == 200) {
         result = List<Map<String, dynamic>>.from(response.data['results']);
+      } else {
+        print(response.statusMessage);
       }
     } catch (e) {
       print(e.toString());
     }
-
     return result;
   }
 
-  Future<List<Map<String, dynamic>>> getTopRatedMovie(int page) async {
+  Future<List<Map<String, dynamic>>> getKeywordSearch(
+    String query,
+    int page,
+  ) async {
     List<Map<String, dynamic>> result = [];
     try {
-      var dio = Dio();
       var headers = {
         'Authorization': 'Bearer ${dotenv.env['TMDB_ACCESS_TOKEN']}',
       };
+      var dio = Dio();
       var response = await dio.request(
-        '${dotenv.env['TMDB_URL']}/movie/top_rated?language=en-US&page=$page',
+        '${dotenv.env['TMDB_URL']}/search/keyword?query=$query&include_adult=false&language=en-US&page=$page',
         options: Options(
           method: 'GET',
           headers: headers,
         ),
       );
+
       if (response.statusCode == 200) {
         result = List<Map<String, dynamic>>.from(response.data['results']);
+      } else {
+        print(response.statusMessage);
       }
     } catch (e) {
       print(e.toString());
     }
-
     return result;
   }
 
-  Future<List<Map<String, dynamic>>> getUpcomingMovie(int page) async {
+  Future<List<Map<String, dynamic>>> getMovieSearch(
+    String query,
+    int page,
+  ) async {
     List<Map<String, dynamic>> result = [];
     try {
-      var dio = Dio();
       var headers = {
         'Authorization': 'Bearer ${dotenv.env['TMDB_ACCESS_TOKEN']}',
       };
+      var dio = Dio();
       var response = await dio.request(
-        '${dotenv.env['TMDB_URL']}/movie/upcoming?language=en-US&page=$page',
+        '${dotenv.env['TMDB_URL']}/search/movie?query=$query&include_adult=false&language=en-US&page=$page',
         options: Options(
           method: 'GET',
           headers: headers,
         ),
       );
+
       if (response.statusCode == 200) {
         result = List<Map<String, dynamic>>.from(response.data['results']);
+      } else {
+        print(response.statusMessage);
       }
     } catch (e) {
       print(e.toString());
     }
-
     return result;
   }
 
-  Future<List<Map<String, dynamic>>> getRelatedMovie(int id, int page) async {
+  Future<List<Map<String, dynamic>>> getMultiSearch(
+    String query,
+    int page,
+  ) async {
     List<Map<String, dynamic>> result = [];
     try {
-      var dio = Dio();
       var headers = {
         'Authorization': 'Bearer ${dotenv.env['TMDB_ACCESS_TOKEN']}',
       };
+      var dio = Dio();
       var response = await dio.request(
-        '${dotenv.env['TMDB_URL']}/movie/$id/recommendations?language=en-US&page=$page',
+        '${dotenv.env['TMDB_URL']}/search/multi?query=$query&include_adult=false&language=en-US&page=$page',
         options: Options(
           method: 'GET',
           headers: headers,
         ),
       );
+
       if (response.statusCode == 200) {
         result = List<Map<String, dynamic>>.from(response.data['results']);
+      } else {
+        print(response.statusMessage);
       }
     } catch (e) {
       print(e.toString());
     }
-
     return result;
   }
 
-  Future<List<Map<String, dynamic>>> getCreditsMovie(int id) async {
+  Future<List<Map<String, dynamic>>> getPersonSearch(
+    String query,
+    int page,
+  ) async {
     List<Map<String, dynamic>> result = [];
     try {
-      var dio = Dio();
       var headers = {
         'Authorization': 'Bearer ${dotenv.env['TMDB_ACCESS_TOKEN']}',
       };
+      var dio = Dio();
       var response = await dio.request(
-        '${dotenv.env['TMDB_URL']}/movie/$id/credits?language=en-US',
+        '${dotenv.env['TMDB_URL']}/search/person?query=$query&include_adult=false&language=en-US&page=$page',
         options: Options(
           method: 'GET',
           headers: headers,
         ),
       );
+
       if (response.statusCode == 200) {
-        result = List<Map<String, dynamic>>.from(response.data['cast']);
-        print(result.length);
+        result = List<Map<String, dynamic>>.from(response.data['results']);
+      } else {
+        print(response.statusMessage);
       }
     } catch (e) {
       print(e.toString());
     }
+    return result;
+  }
 
+  Future<List<Map<String, dynamic>>> getTVSearch(
+    String query,
+    int page,
+  ) async {
+    List<Map<String, dynamic>> result = [];
+    try {
+      var headers = {
+        'Authorization': 'Bearer ${dotenv.env['TMDB_ACCESS_TOKEN']}',
+      };
+      var dio = Dio();
+      var response = await dio.request(
+        '${dotenv.env['TMDB_URL']}/search/tv?query=$query&include_adult=false&language=en-US&page=$page',
+        options: Options(
+          method: 'GET',
+          headers: headers,
+        ),
+      );
+
+      if (response.statusCode == 200) {
+        result = List<Map<String, dynamic>>.from(response.data['results']);
+      } else {
+        print(response.statusMessage);
+      }
+    } catch (e) {
+      print(e.toString());
+    }
     return result;
   }
 }
