@@ -153,7 +153,6 @@ class MovieService {
       var headers = {
         'Authorization': 'Bearer ${dotenv.env['TMDB_ACCESS_TOKEN']}',
       };
-      print(id);
       var resonse = await dio.request(
         '${dotenv.env['TMDB_URL']}/movie/$id/recommendations?language=en-US&page=$page',
         options: Options(
@@ -163,7 +162,6 @@ class MovieService {
       );
       if (resonse.statusCode == 200) {
         result = List<Map<String, dynamic>>.from(resonse.data['results']);
-        print(result.length);
       }
     } catch (e) {
       print(e.toString());
@@ -179,7 +177,6 @@ class MovieService {
       var headers = {
         'Authorization': 'Bearer ${dotenv.env['TMDB_ACCESS_TOKEN']}',
       };
-      print(id);
       var resonse = await dio.request(
         '${dotenv.env['TMDB_URL']}/movie/$id/credits?language=en-US',
         options: Options(

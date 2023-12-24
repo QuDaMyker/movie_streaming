@@ -121,4 +121,53 @@ class TVShowServices {
 
     return result;
   }
+
+  Future<List<Map<String, dynamic>>> getRelatedTVShow(int id, int page) async {
+    List<Map<String, dynamic>> result = [];
+    try {
+      var dio = Dio();
+      var headers = {
+        'Authorization': 'Bearer ${dotenv.env['TMDB_ACCESS_TOKEN']}',
+      };
+      var resonse = await dio.request(
+        '${dotenv.env['TMDB_URL']}/tv/$id/recommendations?language=en-US&page=$page',
+        options: Options(
+          method: 'GET',
+          headers: headers,
+        ),
+      );
+      if (resonse.statusCode == 200) {
+        result = List<Map<String, dynamic>>.from(resonse.data['results']);
+      }
+    } catch (e) {
+      print(e.toString());
+    }
+
+    return result;
+  }
+
+  Future<List<Map<String, dynamic>>> getCreditsTVShow(int id) async {
+    List<Map<String, dynamic>> result = [];
+    try {
+      var dio = Dio();
+      var headers = {
+        'Authorization': 'Bearer ${dotenv.env['TMDB_ACCESS_TOKEN']}',
+      };
+      var resonse = await dio.request(
+        '${dotenv.env['TMDB_URL']}/tv/$id/credits?language=en-US',
+        options: Options(
+          method: 'GET',
+          headers: headers,
+        ),
+      );
+      if (resonse.statusCode == 200) {
+        result = List<Map<String, dynamic>>.from(resonse.data['cast']);
+        print(result.length);
+      }
+    } catch (e) {
+      print(e.toString());
+    }
+
+    return result;
+  }
 }

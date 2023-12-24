@@ -21,7 +21,6 @@ class _RootScreenState extends State<RootViewScreen> {
   late double deviceWidth;
   @override
   void initState() {
-    print('object');
     super.initState();
   }
 

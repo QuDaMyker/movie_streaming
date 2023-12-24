@@ -3,29 +3,30 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get.dart';
 import 'package:movie_streaming/blank.dart';
-import 'package:movie_streaming/modules/detail_movie/controllers/detail_movie_controller.dart';
 import 'package:movie_streaming/modules/detail_movie/views/widgets/item_creadits.dart';
+import 'package:movie_streaming/modules/detail_tv_show/controllers/detail_tv_show_controller.dart';
 import 'package:movie_streaming/modules/films/views/widgets/item_movie.dart';
-import 'package:movie_streaming/modules/streaming_movie/views/streaming_movie_screen.dart';
 
 // ignore: must_be_immutable
-class DetailMovieScreen extends StatelessWidget {
-  DetailMovieScreen({super.key, required this.movieId});
-  final int movieId;
+class DetailTVShowScreen extends StatelessWidget {
+  DetailTVShowScreen({
+    super.key,
+    required this.tvShowId,
+  });
+  final int tvShowId;
   late double deviceHeight;
   late double deviceWidth;
-
   @override
   Widget build(BuildContext context) {
-    final detailMovieController =
-        Get.put(DetailMovieController(movieId: movieId));
+    final detailTVShowController =
+        Get.put(DetailTVShowController(tvShowId: tvShowId));
     deviceHeight = MediaQuery.of(context).size.height;
     deviceWidth = MediaQuery.of(context).size.width;
     return SafeArea(
       child: Scaffold(
         backgroundColor: Colors.black,
         body: Obx(
-          () => detailMovieController.isLoading.value
+          () => detailTVShowController.isLoading.value
               ? const Center(
                   child: CircularProgressIndicator(
                     color: Colors.yellow,
@@ -54,7 +55,7 @@ class DetailMovieScreen extends StatelessWidget {
                         stretchModes: const [StretchMode.zoomBackground],
                         background: Image(
                           image: CachedNetworkImageProvider(
-                              '${dotenv.env['TMDB_BASE_IMAGE_URL']}${detailMovieController.detailMovie.value['backdrop_path']}'),
+                              '${dotenv.env['TMDB_BASE_IMAGE_URL']}${detailTVShowController.detailTVShow.value['backdrop_path']}'),
                           fit: BoxFit.cover,
                         ),
                       ),
@@ -90,12 +91,8 @@ class DetailMovieScreen extends StatelessWidget {
                                     image: DecorationImage(
                                       fit: BoxFit.cover,
                                       image: CachedNetworkImageProvider(
-                                          detailMovieController
-                                                          .detailMovie.value[
-                                                      'belongs_to_collection'] !=
-                                                  null
-                                              ? '${dotenv.env['TMDB_BASE_IMAGE_URL']}${detailMovieController.detailMovie.value['belongs_to_collection']['poster_path']}'
-                                              : '${dotenv.env['TMDB_BASE_IMAGE_URL']}${detailMovieController.detailMovie.value['backdrop_path']}'),
+                                          '${dotenv.env['TMDB_BASE_IMAGE_URL']}${detailTVShowController.detailTVShow.value['poster_path']}' ??
+                                              '${dotenv.env['TMDB_BASE_IMAGE_URL']}${detailTVShowController.detailTVShow.value['backdrop_path']}'),
                                     ),
                                   ),
                                 ),
@@ -109,8 +106,8 @@ class DetailMovieScreen extends StatelessWidget {
                                   mainAxisSize: MainAxisSize.max,
                                   children: [
                                     Text(
-                                      detailMovieController
-                                          .detailMovie.value['release_date'],
+                                      detailTVShowController
+                                          .detailTVShow.value['last_air_date'],
                                       style: const TextStyle(
                                         color: Colors.yellow,
                                       ),
@@ -129,8 +126,8 @@ class DetailMovieScreen extends StatelessWidget {
                                           width: deviceWidth * 0.01,
                                         ),
                                         Text(
-                                          detailMovieController
-                                              .detailMovie.value['vote_average']
+                                          detailTVShowController.detailTVShow
+                                              .value['vote_average']
                                               .toString(),
                                           style: const TextStyle(
                                             color: Colors.yellow,
@@ -149,8 +146,8 @@ class DetailMovieScreen extends StatelessWidget {
                                           width: deviceWidth * 0.01,
                                         ),
                                         Text(
-                                          detailMovieController
-                                              .detailMovie.value['vote_count']
+                                          detailTVShowController
+                                              .detailTVShow.value['vote_count']
                                               .toString(),
                                           style: const TextStyle(
                                             color: Colors.yellow,
@@ -162,7 +159,7 @@ class DetailMovieScreen extends StatelessWidget {
                                       height: deviceHeight * 0.008,
                                     ),
                                     Text(
-                                      'Language: ${detailMovieController.detailMovie.value['spoken_languages'][0]['english_name']}',
+                                      'Language: ${detailTVShowController.detailTVShow.value['spoken_languages'][0]['english_name']}',
                                       style: const TextStyle(
                                         color: Colors.yellow,
                                       ),
@@ -173,7 +170,7 @@ class DetailMovieScreen extends StatelessWidget {
                                     SizedBox(
                                       width: deviceWidth * 0.4,
                                       child: Text(
-                                        'Country: ${detailMovieController.detailMovie.value['production_countries'][0]['name']}',
+                                        'Country: ${detailTVShowController.detailTVShow.value['production_countries'][0]['name']}',
                                         style: const TextStyle(
                                           color: Colors.yellow,
                                         ),
@@ -298,8 +295,8 @@ class DetailMovieScreen extends StatelessWidget {
                                       ),
                                       child: GestureDetector(
                                         onTap: () {
-                                          Get.to(StreamingMovieScreen(
-                                              movieId: movieId));
+                                          // Get.to(StreamingMovieScreen(
+                                          //     movieId: movieId));
                                         },
                                         child: Row(
                                           crossAxisAlignment:
@@ -336,8 +333,8 @@ class DetailMovieScreen extends StatelessWidget {
                               height: deviceHeight * 0.008,
                             ),
                             Text(
-                              detailMovieController
-                                  .detailMovie.value['original_title'],
+                              detailTVShowController
+                                  .detailTVShow.value['original_name'],
                               style: const TextStyle(
                                 color: Colors.white,
                                 fontWeight: FontWeight.w600,
@@ -349,7 +346,7 @@ class DetailMovieScreen extends StatelessWidget {
                             ),
                             Obx(
                               () => Text(
-                                detailMovieController.genreString.value,
+                                detailTVShowController.genreString.value,
                                 style: const TextStyle(
                                   color: Colors.white,
                                   fontWeight: FontWeight.w400,
@@ -361,8 +358,8 @@ class DetailMovieScreen extends StatelessWidget {
                               height: deviceHeight * 0.008,
                             ),
                             Text(
-                              detailMovieController
-                                  .detailMovie.value['overview'],
+                              detailTVShowController
+                                  .detailTVShow.value['overview'],
                               style: const TextStyle(
                                 color: Colors.white,
                                 fontWeight: FontWeight.w200,
@@ -808,8 +805,8 @@ class DetailMovieScreen extends StatelessWidget {
                                 ],
                               ),
                             ),
-                            Obx(() => detailMovieController
-                                    .listRelatedMovies.value.isNotEmpty
+                            Obx(() => detailTVShowController
+                                    .listRelatedTVShows.value.isNotEmpty
                                 ? Column(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     crossAxisAlignment:
@@ -823,63 +820,98 @@ class DetailMovieScreen extends StatelessWidget {
                                           fontWeight: FontWeight.w700,
                                         ),
                                       ),
-                                      SizedBox(
-                                        height: deviceHeight * 0.008,
-                                      ),
-                                      Container(
-                                        padding: EdgeInsets.symmetric(
-                                          vertical: deviceHeight * 0.01,
-                                          horizontal: deviceWidth * 0.0,
-                                        ),
-                                        height: deviceHeight * 0.3,
-                                        child: ListView.builder(
-                                          physics:
-                                              const BouncingScrollPhysics(),
-                                          itemCount: detailMovieController
-                                              .listRelatedMovies.value.length,
-                                          scrollDirection: Axis.horizontal,
-                                          itemBuilder: (context, index) {
-                                            return GestureDetector(
-                                              onTap: () {
-                                                Get.off(
-                                                  Blank(
-                                                    screen: DetailMovieScreen(
-                                                      movieId:
-                                                          detailMovieController
-                                                              .listRelatedMovies
-                                                              .value[index]['id'],
+                                      Obx(
+                                        () => detailTVShowController
+                                                .listRelatedTVShows
+                                                .value
+                                                .isNotEmpty
+                                            ? Column(
+                                                children: [
+                                                  SizedBox(
+                                                    height:
+                                                        deviceHeight * 0.008,
+                                                  ),
+                                                  Container(
+                                                    padding:
+                                                        EdgeInsets.symmetric(
+                                                      vertical:
+                                                          deviceHeight * 0.01,
+                                                      horizontal:
+                                                          deviceWidth * 0.0,
+                                                    ),
+                                                    height: deviceHeight * 0.3,
+                                                    child: ListView.builder(
+                                                      physics:
+                                                          const BouncingScrollPhysics(),
+                                                      itemCount:
+                                                          detailTVShowController
+                                                              .listRelatedTVShows
+                                                              .value
+                                                              .length,
+                                                      scrollDirection:
+                                                          Axis.horizontal,
+                                                      itemBuilder:
+                                                          (context, index) {
+                                                        return GestureDetector(
+                                                          onTap: () {
+                                                            Get.off(
+                                                              Blank(
+                                                                screen:
+                                                                    DetailTVShowScreen(
+                                                                  tvShowId: detailTVShowController
+                                                                          .listRelatedTVShows
+                                                                          .value[
+                                                                      index]['id'],
+                                                                ),
+                                                              ),
+                                                            );
+                                                          },
+                                                          child: ItemMovie(
+                                                            image: detailTVShowController
+                                                                        .listRelatedTVShows
+                                                                        .value[index]
+                                                                    [
+                                                                    'backdrop_path'] ??
+                                                                detailTVShowController
+                                                                        .listRelatedTVShows
+                                                                        .value[index]
+                                                                    [
+                                                                    'poster_path'],
+                                                            title: detailTVShowController
+                                                                    .listRelatedTVShows
+                                                                    .value[
+                                                                index]['name'],
+                                                            rating: detailTVShowController
+                                                                    .listRelatedTVShows
+                                                                    .value[index]
+                                                                [
+                                                                'vote_average'],
+                                                          ),
+                                                        );
+                                                      },
                                                     ),
                                                   ),
-                                                );
-                                                // Get.off(
-                                                //   () => DetailMovieScreen(
-                                                //     movieId:
-                                                //         detailMovieController
-                                                //             .listRelatedMovies
-                                                //             .value[index]['id'],
-                                                //   ),
-                                                // );
-                                              },
-                                              child: ItemMovie(
-                                                image: detailMovieController
-                                                            .listRelatedMovies
-                                                            .value[index]
-                                                        ['backdrop_path'] ??
-                                                    detailMovieController
-                                                            .listRelatedMovies
-                                                            .value[index]
-                                                        ['poster_path'],
-                                                title: detailMovieController
-                                                    .listRelatedMovies
-                                                    .value[index]['title'],
-                                                rating: detailMovieController
-                                                        .listRelatedMovies
-                                                        .value[index]
-                                                    ['vote_average'],
+                                                ],
+                                              )
+                                            : Center(
+                                                child: Padding(
+                                                  padding: EdgeInsets.symmetric(
+                                                    vertical:
+                                                        deviceHeight * 0.05,
+                                                    horizontal:
+                                                        deviceWidth * 0.0,
+                                                  ),
+                                                  child: const Text(
+                                                    'Data doesn\'t updated',
+                                                    style: TextStyle(
+                                                      color: Colors.yellow,
+                                                      fontSize: 16,
+                                                      fontWeight:
+                                                          FontWeight.w500,
+                                                    ),
+                                                  ),
+                                                ),
                                               ),
-                                            );
-                                          },
-                                        ),
                                       ),
                                     ],
                                   )
@@ -895,31 +927,52 @@ class DetailMovieScreen extends StatelessWidget {
                                 fontWeight: FontWeight.w700,
                               ),
                             ),
-                            Container(
-                              padding: EdgeInsets.symmetric(
-                                vertical: deviceHeight * 0.01,
-                                horizontal: deviceWidth * 0.0,
-                              ),
-                              height: deviceHeight * 0.2,
-                              child: ListView.builder(
-                                physics: const BouncingScrollPhysics(),
-                                itemCount: detailMovieController
-                                    .listCreaditsMovies.value.length,
-                                scrollDirection: Axis.horizontal,
-                                itemBuilder: (context, index) {
-                                  return ItemCreadits(
-                                    image: detailMovieController
-                                        .listCreaditsMovies
-                                        .value[index]['profile_path'],
-                                    role: detailMovieController
-                                        .listCreaditsMovies
-                                        .value[index]['known_for_department'],
-                                    name: detailMovieController
-                                        .listCreaditsMovies
-                                        .value[index]['original_name'],
-                                  );
-                                },
-                              ),
+                            Obx(
+                              () => detailTVShowController
+                                      .listCreaditsTVShows.value.isNotEmpty
+                                  ? Container(
+                                      padding: EdgeInsets.symmetric(
+                                        vertical: deviceHeight * 0.01,
+                                        horizontal: deviceWidth * 0.0,
+                                      ),
+                                      height: deviceHeight * 0.2,
+                                      child: ListView.builder(
+                                        physics: const BouncingScrollPhysics(),
+                                        itemCount: detailTVShowController
+                                            .listCreaditsTVShows.value.length,
+                                        scrollDirection: Axis.horizontal,
+                                        itemBuilder: (context, index) {
+                                          return ItemCreadits(
+                                            image: detailTVShowController
+                                                .listCreaditsTVShows
+                                                .value[index]['profile_path'],
+                                            role: detailTVShowController
+                                                    .listCreaditsTVShows
+                                                    .value[index]
+                                                ['known_for_department'],
+                                            name: detailTVShowController
+                                                .listCreaditsTVShows
+                                                .value[index]['original_name'],
+                                          );
+                                        },
+                                      ),
+                                    )
+                                  : Center(
+                                      child: Padding(
+                                        padding: EdgeInsets.symmetric(
+                                          vertical: deviceHeight * 0.05,
+                                          horizontal: deviceWidth * 0.0,
+                                        ),
+                                        child: const Text(
+                                          'Data doesn\'t updated',
+                                          style: TextStyle(
+                                            color: Colors.yellow,
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w500,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
                             ),
                           ],
                         ),
