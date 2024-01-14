@@ -1,4 +1,4 @@
-package com.example.movie_streaming
+package com.buitlab.moviestreaming
 
 import io.flutter.embedding.android.FlutterActivity
 
