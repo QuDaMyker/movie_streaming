@@ -12,6 +12,7 @@
   - Đánh giá
   - Diễn viên
   - Phim liên quan
+- Tìm kiếm theo từ khóa (Movies, tvShow, multi type)
 - Streaming (chưa hoàn thiện)
 - Danh sách xem sao (đang phát triển)
 - Thông tin tài khoản (đang phát triển)
