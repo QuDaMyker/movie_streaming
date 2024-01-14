@@ -1,16 +1,26 @@
-# movie_streaming
+# Movie Streaming
 
+## Công nghệ
+- Flutter
+- Firebase
+
+## Tính năng
+- Hiển thị phim, tv shows đang phổ biển, phim được đánh giá cao
+- Hiển thị thông tin chi tiết của bộ phim, tv shows
+  - Tên phim
+  - Overview
+  - Đánh giá
+  - Diễn viên
+  - Phim liên quan
+- Streaming (chưa hoàn thiện)
+- Danh sách xem sao (đang phát triển)
+- Thông tin tài khoản (đang phát triển)
 A new Flutter project.
 
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## Demo
+<div style="display=flex;flex-direction=row">
+    <img src="./images/frag_film.jpg" alt="Login Image" width="200"/>
+   <img src="./images/frag_tvshows.jpg" alt="Login Image" width="200"/>
+   <img src="./images/detail_film.jpg" alt="Login Image" width="200"/>
+   <img src="./images/detail_film_1.jpg" alt="Login Image" width="200"/>
+</div>
